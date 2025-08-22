@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taschenrechner</title>
+    <!-- Use Tailwind CSS for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the calculator to ensure it's centered and has nice typography */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center">
+
+    <!-- Calculator Container -->
+    <div class="calculator p-6 bg-white shadow-xl rounded-2xl border border-gray-200" style="width: 300px;">
+        <!-- Display Screen -->
+        <input id="display" type="text" readonly class="w-full text-right text-4xl p-4 mb-4 rounded-xl bg-gray-50 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner">
+        
+        <!-- Button Grid -->
+        <div class="grid grid-cols-4 gap-4">
+            <!-- Clear Button -->
+            <button class="col-span-2 text-xl py-4 rounded-xl bg-red-500 text-white hover:bg-red-600 transition-colors shadow-lg" onclick="clearDisplay()">C</button>
+            <!-- Operator Buttons -->
+            <button class="text-xl py-4 rounded-xl bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors shadow-lg" onclick="appendToDisplay('/')">/</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors shadow-lg" onclick="appendToDisplay('*')">*</button>
+            
+            <!-- Number Buttons -->
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('7')">7</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('8')">8</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('9')">9</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors shadow-lg" onclick="appendToDisplay('-')">-</button>
+            
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('4')">4</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('5')">5</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('6')">6</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors shadow-lg" onclick="appendToDisplay('+')">+</button>
+            
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('1')">1</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('2')">2</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('3')">3</button>
+            
+            <!-- Equals Button -->
+            <button class="row-span-2 text-xl py-4 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors shadow-lg" onclick="calculate()">=</button>
+            
+            <button class="col-span-2 text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('0')">0</button>
+            <button class="text-xl py-4 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg" onclick="appendToDisplay('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the display element
+        const display = document.getElementById('display');
+
+        // Function to append a value to the display
+        function appendToDisplay(value) {
+            // Get the last character of the current display value
+            const lastChar = display.value.slice(-1);
+
+            // Check if the last character is an operator and the new value is also an operator
+            const isLastCharOperator = ['+', '-', '*', '/'].includes(lastChar);
+            const isNewCharOperator = ['+', '-', '*', '/'].includes(value);
+
+            // If both are operators, replace the last one instead of appending
+            if (isLastCharOperator && isNewCharOperator) {
+                display.value = display.value.slice(0, -1) + value;
+            } else {
+                // Otherwise, just append the new value
+                display.value += value;
+            }
+        }
+
+        // Function to clear the display
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        // Function to calculate the result
+        function calculate() {
+            try {
+                // Use eval() to evaluate the expression in the display
+                // Note: While eval() is powerful, it can be a security risk with untrusted input.
+                // For a simple calculator like this, it's a convenient solution.
+                display.value = eval(display.value);
+            } catch (error) {
+                // Display "Error" if the calculation fails (e.g., malformed expression)
+                display.value = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
